@@ -1,0 +1,53 @@
+<?php 
+	require_once("../class/DBManager.php");
+
+	if(isset($_POST["user_email"]) && isset($_POST["user_password"]) && isset($_POST["user_name"]))
+	{
+		$userEmail = $_POST["user_email"];
+		$password = $_POST["user_password"];
+		$username = $_POST["user_name"];
+
+		if(!filter_var($userEmail, FILTER_VALIDATE_EMAIL))
+		{
+			echo "not valid email format";
+		}
+		else if(strlen($password) < 4)
+		{
+			echo "bad password";
+		}
+		else if(strlen($username) < 4)
+		{
+			echo "bad name";
+		}
+		else 
+		{
+			try
+			{
+				$db_manager = new DB_Manager();
+				$stmt = $db_manager->pdo->prepare("SELECT email FROM User WHERE email = ?");
+				$stmt->execute(array($userEmail));
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);
+				if($result["email"] == $userEmail)
+				{
+					echo "this email already exists.";
+				}
+				else
+				{
+					$password = password_hash($password, PASSWORD_DEFAULT);
+					$stmt = $db_manager->pdo->prepare("INSERT into User (email,password,name) VALUES(?,?,?)");
+					$stmt->execute(array($userEmail,$password,$username));
+
+					echo "success";
+				}
+			}
+			catch(PDOException $e)
+			{
+				echo $e->getMessage();
+			}
+		}
+	}
+	else
+	{
+		echo "signup fail";
+	}
+?>
