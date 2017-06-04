@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<?php
+	// if(!isset($_COOKIE['userEmail']))
+	// {
+	// 	header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/signin-page.php');
+	// }
+	?>
     <meta charset="utf-8">
     <style type="text/css">
     	#dropbox
@@ -54,6 +60,3 @@
 	</script>
 </body>
 </html>
-<?php
-	
-?>
