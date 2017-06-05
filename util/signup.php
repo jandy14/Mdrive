@@ -34,8 +34,11 @@
 				else
 				{
 					$password = password_hash($password, PASSWORD_DEFAULT);
-					$stmt = $db_manager->pdo->prepare("INSERT into User (email,password,name) VALUES(?,?,?)");
+					$stmt = $db_manager->pdo->prepare("INSERT into User (email,password,name,reg_date) VALUES(?,?,?,now())");
 					$stmt->execute(array($userEmail,$password,$username));
+
+					mkdir("/var/www/html/MDrive/file/video/".$userEmail);
+					mkdir("/var/www/html/MDrive/file/subtitle/".$userEmail);
 
 					echo "success";
 				}

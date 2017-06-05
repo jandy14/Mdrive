@@ -2,10 +2,10 @@
 <html>
 <head>
 	<?php
-	// if(!isset($_COOKIE['userEmail']))
-	// {
-	// 	header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/signin-page.php');
-	// }
+	if(!isset($_COOKIE['userEmail']))
+	{
+		header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/signin-page.php');
+	}
 	?>
     <meta charset="utf-8">
     <style type="text/css">
@@ -39,15 +39,22 @@
 			e.stopPropagation();
 			e.preventDefault();
 			$(this).css("border", "2px dotted #0B85A1");
-			console.log(e.originalEvent.dataTransfer.files);
-			var file = e.originalEvent.dataTransfer.files;
-			console.log(file);
-			var form = new FormData();
-			form.append("userfile",file[0]);
-			
-			var request = new XMLHttpRequest();
-			request.open("POST", "./util/send.php");
-			request.send(form);
+			var file = e.originalEvent.dataTransfer.files[0];
+			var extend = file.name.split('.')[1];
+			if(extend === "mp4")
+			{
+				var form = new FormData();
+				form.append("userfile",file);
+
+				var request = new XMLHttpRequest();
+				request.open("POST", "./util/send.php");
+				request.send(form);
+				console.log("go!");
+			}
+			else
+			{
+
+			}
 		});
 		$("#dropbox").on("dragleave",function(e){
 			e.stopPropagation();
@@ -55,6 +62,11 @@
 			$(this).css("border", "2px dotted #0B85A1");
 		});
 		$("#dropbox").on("dragover",function(e){
+			e.preventDefault();
+		});
+		$(document).on('drop', function (e) 
+		{
+			e.stopPropagation();
 			e.preventDefault();
 		});
 	</script>
