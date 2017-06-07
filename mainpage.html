@@ -13,6 +13,7 @@
     <!-- Custom CSS -->
     <link href="css/main_page.css" rel="stylesheet">
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -40,7 +41,7 @@
                     </div>
                 </div>
                 <div class="inbox-body">
-                    <a href="#myModal" data-toggle="modal" title="Compose" class="btn btn-compose">
+                    <a href="upload_movie.html" data-target="#uploadForm" data-toggle="modal" title="Compose" class="btn btn-compose">
                               UPLOAD
                     </a>
                 </div>
@@ -191,6 +192,13 @@
             $("#wrapper").toggleClass("toggled");
         });
         </script>
+
+        <div class="modal fade" id="uploadForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
