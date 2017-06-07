@@ -27,7 +27,7 @@
 					setcookie('userEmail',$userEmail,time()+86400, '/');
 					echo "success";
 					echo "<script>
-									window.location.replace(\"http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/mainpage.html\");
+									window.location.replace(\"http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/main-page.php\");
 								</script>";
 
 				}
@@ -36,7 +36,7 @@
 					setcookie('userEmail','',time()-1, '/');
 					echo "signin fail";
 					echo "<script>
-									window.location.replace(\"http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.html\");
+									window.location.replace(\"http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/signin-page.php\");
 								</script>";
 				}
 			}
