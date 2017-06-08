@@ -2,6 +2,20 @@
 <html lang="kr">
 
 <head>
+    <?php
+        require_once("./class/DBManager.php");
+        if(!isset($_COOKIE['userEmail']))
+        {
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.html');
+        }
+        $db_manager = new DB_Manager();
+        $stmt = $db_manager->pdo->prepare("SELECT user_num,email,name FROM User WHERE email = ?");
+        $stmt->execute(array($_COOKIE['userEmail']));
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        //$user["name"] is user's name
+        //$user["email"] is user's email
+        //$stmt->rowCount(); result row count
+    ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,8 +50,8 @@
                         <img width="60" hieght="60" src="http://bootsnipp.com/img/avatars/ebeb306fd7ec11ab68cbcaa34282158bd80361a7.jpg">
                     </a>
                     <div class="user-name">
-                        <h5><a href="#">Alireza Zare</a></h5>
-                        <span><a href="#">Info.Ali.Pci@Gmail.com</a></span>
+                        <h5><a href="#"><?php echo $user["name"]?></a></h5>
+                        <span><a href="#"><?php echo $user["email"]?></a></span>
                     </div>
                 </div>
                 <div class="inbox-body">
@@ -76,7 +90,29 @@
                             </div>
                         </div>
                         <!-- Projects Row -->
-                        <div class="row">
+                        <?php
+                            $stmt = $db_manager->pdo->prepare("SELECT name,up_date FROM Video WHERE owner_num = ?");
+                            $stmt->execute(array($user["user_num"]));
+                            //code
+                            $count = $stmt->rowCount();
+                            for($i = 0; ($i*3) < $count && $i < 3; $i++)
+                            {
+                                echo "<div class='row'>";
+                                for($j = 0; $j+($i*3) < $count; $j++)
+                                {
+                                    $video = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    echo "<div class='col-md-4 portfolio-item'>";
+                                    echo "<a href='#'>";
+                                    echo "<img class='img-responsive' src='http://placehold.it/700x400' alt=''>";
+                                    echo "</a>";
+                                    echo "<h3><a href='#'>".$video["name"]."</a></h3>";
+                                    echo "<p>Upload Date : ".$video["up_date"]."</p>";
+                                    echo "</div>";
+                                }
+                                echo "</div>";
+                            }
+                        ?>
+                        <!-- <div class="row">
                             <div class="col-md-4 portfolio-item">
                                 <a href="#">
                                     <img class="img-responsive" src="http://placehold.it/700x400" alt="">
@@ -98,10 +134,10 @@
                                 <h3><a href="#">Movie Name</a></h3>
                                 <p>Upload Date : xx/xx/xx xx:xx:xx</p>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- /.row -->
                         <!-- Projects Row -->
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-4 portfolio-item">
                                 <a href="#">
                                     <img class="img-responsive" src="http://placehold.it/700x400" alt="">
@@ -123,8 +159,8 @@
                                 <h3><a href="#">Movie Name</a></h3>
                                 <p>Upload Date : xx/xx/xx xx:xx:xx</p>
                             </div>
-                        </div>
-                        <!-- Projects Row -->
+                        </div> -->
+                        <!-- Projects Row
                         <div class="row">
                             <div class="col-md-4 portfolio-item">
                                 <a href="#">
@@ -147,7 +183,7 @@
                                 <h3><a href="#">Movie Name</a></h3>
                                 <p>Upload Date : xx/xx/xx xx:xx:xx</p>
                             </div>
-                        </div>
+                        </div>-->
                         <!-- /.row -->
                         <hr>
                         <!-- Pagination -->
@@ -159,6 +195,18 @@
                                     </li>
                                     <li class="active">
                                         <a href="#">1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">3</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">4</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">5</a>
                                     </li>
                                     <li>
                                         <a href="#">2</a>

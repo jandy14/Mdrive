@@ -8,7 +8,7 @@ class DB_Manager
 	public $pdo; // PDO 클래스
 
 	// 생성자
-	function __construct($pFilePath = '../data/account.dat')
+	function __construct($pFilePath = '/var/www/html/MDrive/data/account.dat')
 	{
 		$settingFile = $pFilePath;
 
