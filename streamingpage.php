@@ -14,6 +14,23 @@
     <link href="css/main_page.css" rel="stylesheet">
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
     <style type="text/css">
+    <?php
+        require_once("./class/DBManager.php");
+        if(!isset($_COOKIE['userEmail']))
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.html');
+        if(!isset($_GET['num']))
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/mainpage.php');
+        $db_manager = new DB_Manager();
+        $stmt = $db_manager->pdo->prepare("SELECT user_num FROM User WHERE email = ?");
+        $stmt->execute(array($_COOKIE['userEmail']));
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $db_manager->pdo->prepare("SELECT name,caption_num FROM Video WHERE owner_num = ? and video_num = ?");
+        $stmt->execute(array($user["user_num"],$_GET["num"]));
+        if($stmt->rowCount() != 1)
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/mainpage.php');
+        $video = $stmt->fetch(PDO::FETCH_ASSOC);
+    ?>
+
     body {
         background-color: #000000;
         margin: 0px;
@@ -65,9 +82,22 @@
             <div class="row">
                 <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
                 <video id="vt" width="400" height="100" controls>
-                    <source src="../LostRoom1.mp4" type="video/mp4">
-                    <track kind="subtitles" srclang="kr" label="1ghk" src="../LostRoom1.vtt" default>
-                    <track kind="subtitles" srclang="kr" label="2ghk" src="../LostRoom2.vtt"> what the?
+                    <?php
+                        echo "<source src='./file/video/".$_COOKIE['userEmail']."/".$video['name']."' type='video/mp4'>";
+                        $stmt = $db_manager->pdo->prepare("SELECT caption_num,name FROM Caption WHERE video_num = ? and owner_num = ?");
+                        $stmt->execute(array($_GET['num'], $user['user_num']));
+                        $count = $stmt->rowCount();
+                        for($i = 0; $i < $count; ++$i)
+                        {
+                            $caption = $stmt->fetch(PDO::FETCH_ASSOC);
+                            echo "<track kind='subtitles' label='".$caption['name']."' src='./file/caption/".$_COOKIE['userEmail']."/".$caption['name']."' ";
+                            if($caption['caption_num'] == $video['caption_num'])
+                                echo "default";
+                            echo ">";
+                        }
+
+                    ?>
+                    what the?
                 </video>
                 <!-- Projects Row -->
             </div>

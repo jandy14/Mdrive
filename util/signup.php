@@ -38,7 +38,7 @@
 					$stmt->execute(array($userEmail,$password,$username));
 
 					mkdir("/var/www/html/MDrive/file/video/".$userEmail);
-					mkdir("/var/www/html/MDrive/file/subtitle/".$userEmail);
+					mkdir("/var/www/html/MDrive/file/caption/".$userEmail);
 
 					echo "success";
 				}

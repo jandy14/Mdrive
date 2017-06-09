@@ -40,7 +40,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
+ 
 <body>
     <div id="wrapper">
         <!-- Sidebar -->
@@ -92,11 +92,12 @@
                         </div>
                         <!-- Projects Row -->
                         <?php
+                            $page = 1;
                             if(isset($_GET['page']))
                                 $page = $_GET['page'];
-                            else
-                                $page = 1;
-                            $stmt = $db_manager->pdo->prepare("SELECT name,up_date FROM Video WHERE owner_num = ?");
+                                if($page < 1)
+                                    $page = 1;
+                            $stmt = $db_manager->pdo->prepare("SELECT video_num,name,up_date FROM Video WHERE owner_num = ?");
                             $stmt->execute(array($user["user_num"]));
                             //code
                             $count = $stmt->rowCount();
@@ -106,90 +107,18 @@
                                 echo "<div class='row'>";
                                 for($j = 0; $j+($i*3)+($page-1)*9 < $count && $j < 3; $j++)
                                 {
-                                    
+                                    $addr = './streamingpage.php?num='.strval($videos[($page-1)*9+($i*3)+$j]["video_num"]);
                                     echo "<div class='col-md-4 portfolio-item'>";
-                                    echo "<a href='#'>";
+                                    echo "<a href='".$addr."'>";
                                     echo "<img class='img-responsive' src='http://placehold.it/700x400' alt=''>";
                                     echo "</a>";
-                                    echo "<h3><a href='#'>".$videos[($page-1)*9+($i*3)+$j]["name"]."</a></h3>";
+                                    echo "<h3><a href='".$addr."'>".$videos[($page-1)*9+($i*3)+$j]["name"]."</a></h3>";
                                     echo "<p>Upload Date : ".$videos[($page-1)*9+($i*3)+$j]["up_date"]."</p>";
                                     echo "</div>";
                                 }
                                 echo "</div>";
                             }
                         ?>
-                        <!-- <div class="row">
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                        </div> -->
-                        <!-- /.row -->
-                        <!-- Projects Row -->
-                        <!-- <div class="row">
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                        </div> -->
-                        <!-- Projects Row
-                        <div class="row">
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                            <div class="col-md-4 portfolio-item">
-                                <a href="#">
-                                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                                </a>
-                                <h3><a href="#">Movie Name</a></h3>
-                                <p>Upload Date : xx/xx/xx xx:xx:xx</p>
-                            </div>
-                        </div>-->
                         <!-- /.row -->
                         <hr>
                         <!-- Pagination -->
@@ -198,10 +127,11 @@
                                 <ul class="pagination">
                                     <?php
                                         //it is not necessary. just better viewing
+                                        $page = 1;
                                         if(isset($_GET['page']))
                                             $page = $_GET['page'];
-                                        else
-                                            $page = 1;
+                                            if($page < 1)
+                                                $page = 1;
                                         $max = (($count-1)/9)+1; //0~9 is page1 10~18 page2
                                         if($page <= 1)
                                            echo "<li><a href='#'>&laquo;</a></li>";
@@ -223,27 +153,6 @@
                                         else
                                             echo "<li><a href='./mainpage.php?page=".strval($page+1)."'>&raquo;</a></li>";
                                     ?>
-                                    <!-- <li>
-                                        <a href="#">&laquo;</a>
-                                    </li>
-                                    <li class="active">
-                                        <a href="#">1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">4</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">5</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">&raquo;</a>
-                                    </li> -->
                                 </ul>
                             </div>
                         </div>
