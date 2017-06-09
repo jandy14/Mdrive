@@ -8,6 +8,7 @@
         {
             header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.html');
         }
+
         $db_manager = new DB_Manager();
         $stmt = $db_manager->pdo->prepare("SELECT user_num,email,name FROM User WHERE email = ?");
         $stmt->execute(array($_COOKIE['userEmail']));
@@ -47,7 +48,7 @@
             <ul class="sidebar-nav">
                 <div class="user-head">
                     <a class="inbox-avatar" href="javascript:;">
-                        <img width="60" hieght="60" src="http://bootsnipp.com/img/avatars/ebeb306fd7ec11ab68cbcaa34282158bd80361a7.jpg">
+                        <img width="60" hieght="60" src="https://openclipart.org/download/247319/abstract-user-flat-3.svg">
                     </a>
                     <div class="user-name">
                         <h5><a href="#"><?php echo $user["name"]?></a></h5>
@@ -91,22 +92,27 @@
                         </div>
                         <!-- Projects Row -->
                         <?php
+                            if(isset($_GET['page']))
+                                $page = $_GET['page'];
+                            else
+                                $page = 1;
                             $stmt = $db_manager->pdo->prepare("SELECT name,up_date FROM Video WHERE owner_num = ?");
                             $stmt->execute(array($user["user_num"]));
                             //code
                             $count = $stmt->rowCount();
-                            for($i = 0; ($i*3) < $count && $i < 3; $i++)
+                            $videos = $stmt->fetchall();
+                            for($i = 0; ($page-1)*9 + ($i*3) < $count && $i < 3; $i++)
                             {
                                 echo "<div class='row'>";
-                                for($j = 0; $j+($i*3) < $count; $j++)
+                                for($j = 0; $j+($i*3)+($page-1)*9 < $count && $j < 3; $j++)
                                 {
-                                    $video = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    
                                     echo "<div class='col-md-4 portfolio-item'>";
                                     echo "<a href='#'>";
                                     echo "<img class='img-responsive' src='http://placehold.it/700x400' alt=''>";
                                     echo "</a>";
-                                    echo "<h3><a href='#'>".$video["name"]."</a></h3>";
-                                    echo "<p>Upload Date : ".$video["up_date"]."</p>";
+                                    echo "<h3><a href='#'>".$videos[($page-1)*9+($i*3)+$j]["name"]."</a></h3>";
+                                    echo "<p>Upload Date : ".$videos[($page-1)*9+($i*3)+$j]["up_date"]."</p>";
                                     echo "</div>";
                                 }
                                 echo "</div>";
@@ -190,7 +196,34 @@
                         <div class="row text-center">
                             <div class="col-lg-12">
                                 <ul class="pagination">
-                                    <li>
+                                    <?php
+                                        //it is not necessary. just better viewing
+                                        if(isset($_GET['page']))
+                                            $page = $_GET['page'];
+                                        else
+                                            $page = 1;
+                                        $max = (($count-1)/9)+1; //0~9 is page1 10~18 page2
+                                        if($page <= 1)
+                                           echo "<li><a href='#'>&laquo;</a></li>";
+                                        else
+                                           echo "<li><a href='./mainpage.php?page=".strval($page-1)."'>&laquo;</a></li>";
+
+                                        for($i = $page-4,$c = 0; $c < 9; ++$i,++$c)
+                                        {
+                                            if($i < 1 || $i > $max)
+                                                continue;
+                                            if($i == $page)
+                                                echo "<li class='active'><a href='#'>".$i."</a></li>";
+                                            else
+                                                echo "<li><a href='./mainpage.php?page=".$i."'>".$i."</a></li>";
+                                        }
+
+                                        if($page >= $max)
+                                            echo "<li><a href='#'>&raquo;</a></li>";
+                                        else
+                                            echo "<li><a href='./mainpage.php?page=".strval($page+1)."'>&raquo;</a></li>";
+                                    ?>
+                                    <!-- <li>
                                         <a href="#">&laquo;</a>
                                     </li>
                                     <li class="active">
@@ -209,20 +242,8 @@
                                         <a href="#">5</a>
                                     </li>
                                     <li>
-                                        <a href="#">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">4</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">5</a>
-                                    </li>
-                                    <li>
                                         <a href="#">&raquo;</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                         </div>
