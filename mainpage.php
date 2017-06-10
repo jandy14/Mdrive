@@ -97,7 +97,7 @@
                                 $page = $_GET['page'];
                                 if($page < 1)
                                     $page = 1;
-                            $stmt = $db_manager->pdo->prepare("SELECT video_num,name,up_date FROM Video WHERE owner_num = ?");
+                            $stmt = $db_manager->pdo->prepare("SELECT video_num,name,up_date FROM Video WHERE owner_num = ? ORDER BY up_date DESC");
                             $stmt->execute(array($user["user_num"]));
                             //code
                             $count = $stmt->rowCount();
@@ -132,7 +132,7 @@
                                             $page = $_GET['page'];
                                             if($page < 1)
                                                 $page = 1;
-                                        $max = (($count-1)/9)+1; //0~9 is page1 10~18 page2
+                                        $max = intval(($count-1)/9)+1; //0~9 is page1 10~18 page2
                                         if($page <= 1)
                                            echo "<li><a href='#'>&laquo;</a></li>";
                                         else
