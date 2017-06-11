@@ -110,7 +110,12 @@
                                     $addr = './streamingpage.php?num='.strval($videos[($page-1)*9+($i*3)+$j]["video_num"]);
                                     echo "<div class='col-md-4 portfolio-item'>";
                                     echo "<a href='".$addr."'>";
-                                    echo "<img class='img-responsive' src='http://placehold.it/700x400' alt=''>";
+                                    echo "<img class='img-responsive' src='./file/thumbnail/".$user["email"]."/".$videos[($page-1)*9+($i*3)+$j]["name"].".png'  height='400'
+                                    onerror=\"this.src='http://placehold.it/700x400'\">";
+                                    //echo "<img class='img-responsive' src='http://placehold.it/700x400' alt=''>";
+                                    //echo "<video width='700' height='400'>";
+                                    //echo "<source src='./file/video/".$_COOKIE['userEmail']."/".$videos[($page-1)*9+($i*3)+$j]["name"]."' type='video/mp4'>";
+                                    //echo "</video>";
                                     echo "</a>";
                                     echo "<h3><a href='".$addr."'>".$videos[($page-1)*9+($i*3)+$j]["name"]."</a></h3>";
                                     echo "<p>Upload Date : ".$videos[($page-1)*9+($i*3)+$j]["up_date"]."</p>";

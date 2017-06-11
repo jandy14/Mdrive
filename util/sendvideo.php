@@ -8,6 +8,7 @@
 	$uploaddir = '/var/www/html/MDrive/file/video/'.$userEmail.'/';
 	
 	$videoName = basename($_FILES['userfile']['name']);
+	$anotherName = basename($_FILES['userfile']['name']);
 	if(strtolower(substr(strrchr($videoName,"."),1)) != 'mp4')
 		die('fail');
 	$db_manager = new DB_Manager();
@@ -26,6 +27,7 @@
 			if($stmt->rowCount() == 0)
 			{
 				$videoName = "(".$i.")".$videoName;
+				$anotherName = "\\(".$i."\\)".$anotherName;
 				break;
 			}
 		}
@@ -46,8 +48,11 @@
 		}
 		else
 		{
+			$anotherfile = $uploaddir . $anotherName;
+			exec("ffmpeg -i ".$anotherfile." -ss 00:00:01 -s 700x400 -vframes 1 /var/www/html/MDrive/file/thumbnail/".$userEmail."/".$anotherName.".png");
 			$stmt = $db_manager->pdo->prepare("INSERT into Video (owner_num,name,up_date) VALUES(?,?,now())");
 			$stmt->execute(array($result['user_num'],$videoName));
+
 			echo "success";
 		}
 	}
