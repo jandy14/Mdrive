@@ -39,7 +39,7 @@
 					//echo "<script>
 					//				window.location.replace(\"http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/signin-page.php\");
 					//			</script>";
-					header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.html');
+					header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.php');
 				}
 			}
 			catch(PDOException $e)

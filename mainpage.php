@@ -6,7 +6,7 @@
         require_once("./class/DBManager.php");
         if(!isset($_COOKIE['userEmail']))
         {
-            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.html');
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.php');
         }
 
         $db_manager = new DB_Manager();
@@ -70,7 +70,7 @@
                         <!-- <span class="label label-info pull-right">30</span></a> -->
                     </li>
                     <li>
-                        <a href="#"><i class=" fa fa-trash-o"></i> Logout</a>
+                        <a href="./util/signout.php"><i class=" fa fa-trash-o"></i> Logout</a>
                     </li>
                 </ul>
             </ul>

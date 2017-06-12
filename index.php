@@ -21,6 +21,23 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <?php
+
+        require_once("./class/DBManager.php");
+        if(!isset($_COOKIE['userEmail']))
+        {
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.php');
+        }
+
+        $db_manager = new DB_Manager();
+        $stmt = $db_manager->pdo->prepare("SELECT user_num,email,name FROM User WHERE email = ?");
+        $stmt->execute(array($_COOKIE['userEmail']));
+        if($stmt->rowCount() != 0)
+            header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/mainpage.php');
+
+
+
+    ?>
 </head>
 
 <body>
