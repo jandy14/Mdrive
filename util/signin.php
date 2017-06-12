@@ -1,15 +1,22 @@
 <?php 
 	require_once("../class/DBManager.php");
 
-	if(isset($_POST["user_email"]) && isset($_POST["user_password"]))
-	{
-		$userEmail = $_POST["user_email"];
-		$password = $_POST["user_password"];
+	/*
+		로그인
+	*/
 
-		if(!filter_var($userEmail, FILTER_VALIDATE_EMAIL))
+	// 유저 이메일과 비밀번호 입력 확인
+	if(isset($_POST["user_email"]) && isset($_POST["user_password"])) 
+	{
+		$userEmail = $_POST["user_email"]; // 입력된 이메일
+		$password = $_POST["user_password"]; // 입력된 비밀번호
+
+		// 이메일 형식이 맞는 지 확인
+		if(!filter_var($userEmail, FILTER_VALIDATE_EMAIL)) 
 		{
 			echo "not valid email format";
 		}
+		// 비밀번호 최소 4자 확인
 		else if(strlen($password) < 4)
 		{
 			echo "bad password";
@@ -18,6 +25,11 @@
 		{
 			try
 			{
+				/*
+					입력된 이메일의 비밀번호 DB에 요청
+					입력된 비밀번호와 매칭된다면 이메일을 쿠키에 저장
+					안된다면 쿠키를 초기화 
+				*/
 				$db_manager = new DB_Manager();
 				$stmt = $db_manager->pdo->prepare("SELECT email,password FROM User WHERE email = ?");
 				$stmt->execute(array($userEmail));

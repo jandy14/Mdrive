@@ -16,17 +16,30 @@
     <style type="text/css">
     <?php
         require_once("./class/DBManager.php");
+
+        // 유저 이메일 쿠키가 존재하는 지 확인
+        // 없다면 초기 페이지로...
         if(!isset($_COOKIE['userEmail']))
             header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.php');
+        // 비디오 넘버를 얻습니다.
+        // 비디오 넘버를 얻지 못했다면 메인 페이지로...
         if(!isset($_GET['num']))
             header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/mainpage.php');
+
+        /*
+            유저 이메일 쿠키로 유저 정보를 DB에 요청합니다.
+        */
         $db_manager = new DB_Manager();
         $stmt = $db_manager->pdo->prepare("SELECT user_num FROM User WHERE email = ?");
         $stmt->execute(array($_COOKIE['userEmail']));
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        /*
+            유저 정보로 비디오 정보를 DB에 요청합니다.
+        */
         $stmt = $db_manager->pdo->prepare("SELECT name,caption_num FROM Video WHERE owner_num = ? and video_num = ?");
         $stmt->execute(array($user["user_num"],$_GET["num"]));
-        if($stmt->rowCount() != 1)
+        if($stmt->rowCount() != 1) // 비디오가 존재하지 않다면 메인 페이지로...
             header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/mainpage.php');
         $video = $stmt->fetch(PDO::FETCH_ASSOC);
     ?>
@@ -73,6 +86,10 @@
                     <li class="active">
                         <!-- 영상에 링킹되있는 자막들 출력 -->
                         <?php
+                            /*
+                                유저 정보와 비디오 넘버로 자막을 DB에 자막을 요청하고
+                                자막 리스트를 보여줍니다.
+                            */
                             $stmt = $db_manager->pdo->prepare("SELECT caption_num,name FROM Caption WHERE video_num = ? and owner_num = ?");
                             $stmt->execute(array($_GET['num'], $user['user_num']));
                             $count = $stmt->rowCount();
@@ -102,6 +119,11 @@
                 </a>
                 <video id="vt" width="400" height="100" controls>
                     <?php
+                        /*
+                            비디오와 자막 리스트를 사용해
+                            video 태그를 채웁니다.
+                        */
+
                         echo "<source src='./file/video/".$_COOKIE['userEmail']."/".$video['name']."' type='video/mp4'>";
                         $stmt = $db_manager->pdo->prepare("SELECT caption_num,name FROM Caption WHERE video_num = ? and owner_num = ?");
                         $stmt->execute(array($_GET['num'], $user['user_num']));

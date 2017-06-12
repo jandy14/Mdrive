@@ -4,10 +4,17 @@
 <head>
     <?php
         require_once("./class/DBManager.php");
+
+        // 유저 이메일 쿠키가 존재하는 지 확인
         if(!isset($_COOKIE['userEmail']))
         {
             header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.php');
         }
+
+        /*
+            존재한다면 이메일 쿠키로 
+            유저 이름을 DB에서 불러옵니다.
+        */
 
         $db_manager = new DB_Manager();
         $stmt = $db_manager->pdo->prepare("SELECT user_num,email,name FROM User WHERE email = ?");
@@ -89,6 +96,9 @@
                         </div>
                         <!-- Projects Row -->
                         <?php
+                            /*
+                                페이지에 따라 비디오 리스트를 보여줍니다.
+                            */
                             $page = 1;
                             if(isset($_GET['page']))
                                 $page = $_GET['page'];
@@ -128,7 +138,7 @@
                             <div class="col-lg-12">
                                 <ul class="pagination">
                                     <?php
-                                        //it is not necessary. just better viewing
+                                        // 필요하지는 않지만 보기가 좋게 만들어 줍니다.
                                         $page = 1;
                                         if(isset($_GET['page']))
                                             $page = $_GET['page'];

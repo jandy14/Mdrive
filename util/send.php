@@ -1,5 +1,6 @@
 <?php
 	require_once("../class/DBManager.php");
+
 	if(!isset($_COOKIE['userEmail']))
 	{
 		header('Location: http://ec2-54-202-179-17.us-west-2.compute.amazonaws.com/MDrive/index.php');

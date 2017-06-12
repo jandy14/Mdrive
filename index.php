@@ -24,8 +24,14 @@
     <?php
 
         require_once("./class/DBManager.php");
+
+        // 유저 이메일 쿠키가 존재하는 지 확인
         if(isset($_COOKIE['userEmail']))
         {
+            /*
+                이메일이 DB에 존재한다면
+                mainpage.php로 이동
+            */
             $db_manager = new DB_Manager();
             $stmt = $db_manager->pdo->prepare("SELECT user_num,email,name FROM User WHERE email = ?");
             $stmt->execute(array($_COOKIE['userEmail']));
