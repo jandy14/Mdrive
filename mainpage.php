@@ -66,7 +66,7 @@
                         <!-- <span class="label label-danger pull-right"></span></a> -->
                     </li>
                     <li>
-                        <a href="#"><i class=" fa fa-wrench"></i> Config</a>
+                        <a href="config.html" data-target="#configForm" data-toggle="modal" title="Compose"><i class=" fa fa-wrench"></i> Config</a>
                         <!-- <span class="label label-info pull-right">30</span></a> -->
                     </li>
                     <li>
@@ -174,6 +174,12 @@
         </script>
 
         <div class="modal fade" id="uploadForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="configForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                 </div>
