@@ -66,14 +66,11 @@
                         <!-- <span class="label label-danger pull-right"></span></a> -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bookmark-o"></i> Favorites</a>
-                    </li>
-                    <li>
                         <a href="#"><i class=" fa fa-wrench"></i> Config</a>
                         <!-- <span class="label label-info pull-right">30</span></a> -->
                     </li>
                     <li>
-                        <a href="#"><i class=" fa fa-trash-o"></i> Trash</a>
+                        <a href="#"><i class=" fa fa-trash-o"></i> Logout</a>
                     </li>
                 </ul>
             </ul>
@@ -87,7 +84,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                                <h1 class="page-header"> 뭘 적어야 할까요<small>나도 몰겠어요</small></h1>
+                                <h1 class="page-header"> 나의 파일들<small> 교수님 A길만 걷게 해주세요</small></h1>
                             </div>
                         </div>
                         <!-- Projects Row -->

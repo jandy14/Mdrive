@@ -60,7 +60,7 @@
             <ul class="sidebar-nav">
                 <div class="user-head">>
                     <div class="user-name">
-                        <h5><a href="#">재생중인 영상 제목</a></h5>
+                        <h5><a href="#"><?php echo $video['name']; ?></a></h5>
                         <span><a href="#">이 동영상을 위한 자막</a></span>
                     </div>
                 </div>
@@ -72,7 +72,23 @@
                 <ul class="inbox-nav inbox-divider">
                     <li class="active">
                         <!-- 영상에 링킹되있는 자막들 출력 -->
-                        <a href="#"><i class="fa fa-file-text"></i> 자막 제목</a>
+                        <?php
+                            $stmt = $db_manager->pdo->prepare("SELECT caption_num,name FROM Caption WHERE video_num = ? and owner_num = ?");
+                            $stmt->execute(array($_GET['num'], $user['user_num']));
+                            $count = $stmt->rowCount();
+                            if($count == 0)
+                            {
+                                echo "<a href='#'><i class='fa fa-file-text'></i> no caption </a>";
+                            }
+                            else
+                            {
+                                for($i = 0; $i < $count; ++$i)
+                                {
+                                    $caption = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    echo "<a href='#'><i class='fa fa-file-text'></i>".$caption['name']."</a>";
+                                }
+                            }
+                        ?>
                     </li>
                 </ul>
             </ul>
@@ -80,7 +96,10 @@
         <!-- /#sidebar-wrapper -->
         <div id="page-content-wrapper">
             <div class="row">
-                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                <a>
+                    <image id="subtitle-toggle" href="#subtitle-toggle" src="img/subtitle-btn.png "></image>
+                    <image id="back-toggle" src="img/exit-btn.png" align="right" onClick="history.back();"></image>
+                </a>
                 <video id="vt" width="400" height="100" controls>
                     <?php
                         echo "<source src='./file/video/".$_COOKIE['userEmail']."/".$video['name']."' type='video/mp4'>";
@@ -103,7 +122,7 @@
             </div>
         </div>
         <script>
-        $("#menu-toggle").click(function(e) {
+        $("#subtitle-toggle").click(function(e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
